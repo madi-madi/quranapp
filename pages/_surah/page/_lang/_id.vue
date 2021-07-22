@@ -2,7 +2,7 @@
   <div>
     <b-container fluid class="p-0 mt-2">
       <b-row class="justify-content-center overflow-auto text-center ">
-        <div class="col-6 col-lg-4 col-md-6 col-sm-12  ">
+        <div class="col col-lg-4 col-md-6 col-sm-12  ">
           <div id="audio" class="player-wrapper">
             <AudioPlayer
               :status="!!ayahaAudio"
@@ -21,12 +21,12 @@
         <!-- Content here -->
 
         <!-- <div class="col-12 col-lg-4 col-md-6 col-sm-12 frame h-100 " :style="{height: scrollerHeight}" @mouseenter="mouseEnter" @mousemove="mouseMove" @mouseleave="mouseLeave"  > -->
-        <div class="col-6 col-lg-4 col-md-6 col-sm-12 frame h-100 " v-if="surah">
+        <div class="col col-lg-4 col-md-6 col-sm-12 frame h-100 " v-if="surah">
           <!-- <h1 v-if="surah">{{surah.name}}</h1> -->
           <!-- <b-card bg-variant="white" :header="surah.name" text-variant="dark" class="text-center h-100  border border-warning p-2  mt-4 ">
         <b-card-text class="h-100 mr-2 ml-2 text-justify"> -->
           <div class="col pr-5 pl-5 pb-2 pt-3 mt-4 mb-5 text-justify">
-            <p class="mt-0" v-once>
+            <p class="mt-4 " v-once>
               {{ surah.surahs[$route.params.surah].name }}
             </p>
             <span class="p-0" v-for="(ayah, index) in surah.ayahs" :key="index">
