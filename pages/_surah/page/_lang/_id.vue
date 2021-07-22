@@ -182,7 +182,7 @@ export default {
   async asyncData({ $axios, params }) {
     try {
       const response = await $axios.$get(
-        `http://api.alquran.cloud/v1/page/${params.id}/${params.lang}.asad`
+        `https://api.alquran.cloud/v1/page/${params.id}/${params.lang}.asad`
       );
       // console.log(response);
       return { surah: response.data };
@@ -227,7 +227,7 @@ export default {
     if (this.surah.ayahs.filter(e => Number(e.number) === Number(ayahNum)).length > 0) {
         this.ayahaAudioStatus = false;
         this.$axios
-        .$get(`http://api.alquran.cloud/v1/ayah/${ayahNum}/ar.alafasy`)
+        .$get(`https://api.alquran.cloud/v1/ayah/${ayahNum}/ar.alafasy`)
         .then(
         res => (
           (this.ayahaAudio = res.data.audio), (this.ayahaAudioStatus = true)
