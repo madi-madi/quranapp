@@ -1,43 +1,54 @@
 <template>
-  <div>
-    <b-container fluid class="p-0 mt-2">
-      <b-row class="justify-content-center overflow-auto text-center ">
-        <div class="col col-lg-4 col-md-6 col-sm-12  ">
-          <div id="audio" class="player-wrapper">
-            <AudioPlayer
-              :status="!!ayahaAudio"
-              :ayah="ayahNumber"
-              :file="ayahaAudio"
-              :get-quran-audio="getQuranAudio"
-              :auto-play="true"
-            ></AudioPlayer>
-          </div>
-        </div>
-      </b-row>
-      <b-row
-        class="justify-content-center  mb-5 overflow-auto quran-banner" ref="app"
-        :style="{ height: scrollerHeight }"
-      >
-        <!-- Content here -->
-
-        <!-- <div class="col-12 col-lg-4 col-md-6 col-sm-12 frame h-100 " :style="{height: scrollerHeight}" @mouseenter="mouseEnter" @mousemove="mouseMove" @mouseleave="mouseLeave"  > -->
-        <div class="col col-lg-4 col-md-6 col-sm-12 frame h-100 " v-if="surah">
+       <div class="col col-lg-4 col-md-6 col-sm-12 frame h-100 " v-if="surah">
           <!-- <h1 v-if="surah">{{surah.name}}</h1> -->
           <!-- <b-card bg-variant="white" :header="surah.name" text-variant="dark" class="text-center h-100  border border-warning p-2  mt-4 ">
         <b-card-text class="h-100 mr-2 ml-2 text-justify"> -->
+
           <div class="col pr-5 pl-5 pb-2 pt-3 mt-4 mb-5 text-justify">
-            <p class="mt-4 " v-once>
-              {{ surah.surahs[$route.params.surah].name }}
+            <template >
+              <div v-for="(sur , index) in fillterd" :key="index">
+              <p class="mt-4 " v-once>
+              {{ meta.data.surahs.references[index-1].text }}
             </p>
-            <span class="p-0" v-for="(ayah, index) in surah.ayahs" :key="index">
+            <span class="p-0" v-for="(ayah, index) in sur" :key="index">
               <p v-if="ayah.numberInSurah === 1">
                 {{ ayah.text }}
-                <b-badge variant="warning">{{ ayah.numberInSurah }}</b-badge>
+                <!-- <b-badge variant="warning">{{ ayah.numberInSurah }}</b-badge> -->
+              <svg width="6%" height="6%" viewBox="0 -400 1250 1625" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <circle r="605" stroke="#000" cx="625" cy="421" stroke-width="30" fill="#d5d554"/>
+
+              <circle r="510" stroke="#000" cx="625" cy="421" stroke-width="30" fill="#ffffff"/>
+              <text x="50%" y="-25%" text-anchor="middle" stroke="#51c5cf" stroke-width="2px"  font-weight="bold" font-size="650px" dy="1.6em">{{ ayah.numberInSurah }}</text>
+              <g id="header">
+              <path d="m1006.2,46.902c96.075,45.999,160.74,23.972,201.66-30.111-83.3-13.413-157.3-96.153-229.57-148.02-157.22-112.81-249.67-57.8-353.51-236.32-103.83,178.49-196.28,123.48-353.5,236.29-72.29,51.864-146.26,134.6-229.5,148.02,40.928,54.082,105.59,76.11,201.66,30.11,107.34,116.17,142.73-192.06,381.34,10.364,238.62-202.39,274.01,105.84,381.38-10.33z" stroke="#000" stroke-width="30" fill="#d5d554"/>
+              <circle r="69" cx="625" cy="-127" fill="#000"/>
+
+
+              <path id="repu" d="M466.92-110.36c-75.47,27.435-114,46.932-165.42,83.529" stroke="#000" stroke-linecap="round" stroke-width="43"/>
+              <use xlink:href="#repu" transform="translate(1248,0) scale(-1,1)"/>
+              </g>
+              <use xlink:href="#header" transform="translate(0,825) scale(1,-1)"/>
+              </svg>
               </p>
 
               <template v-else>
                 <span  :class="{'ayaha-active-color':ayah.number === ayahNumber}">{{ ayah.text }}</span>
-                <b-badge variant="warning">{{ ayah.numberInSurah }}</b-badge>
+                <!-- <b-badge variant="warning">{{ ayah.numberInSurah }}</b-badge> -->
+              <svg width="6%" height="6%" viewBox="0 -400 1250 1625" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <circle r="605" stroke="#000" cx="625" cy="421" stroke-width="30" fill="#d5d554"/>
+
+              <circle r="510" stroke="#000" cx="625" cy="421" stroke-width="30" fill="#ffffff"/>
+              <text x="50%" y="-25%" text-anchor="middle" stroke="#51c5cf" stroke-width="2px" font-weight="bold" font-size="650px" dy="1.6em">{{ ayah.numberInSurah }}</text>
+              <g id="header">
+              <path d="m1006.2,46.902c96.075,45.999,160.74,23.972,201.66-30.111-83.3-13.413-157.3-96.153-229.57-148.02-157.22-112.81-249.67-57.8-353.51-236.32-103.83,178.49-196.28,123.48-353.5,236.29-72.29,51.864-146.26,134.6-229.5,148.02,40.928,54.082,105.59,76.11,201.66,30.11,107.34,116.17,142.73-192.06,381.34,10.364,238.62-202.39,274.01,105.84,381.38-10.33z" stroke="#000" stroke-width="30" fill="#d5d554"/>
+              <circle r="69" cx="625" cy="-127" fill="#000"/>
+
+
+              <path id="repu" d="M466.92-110.36c-75.47,27.435-114,46.932-165.42,83.529" stroke="#000" stroke-linecap="round" stroke-width="43"/>
+              <use xlink:href="#repu" transform="translate(1248,0) scale(-1,1)"/>
+              </g>
+              <use xlink:href="#header" transform="translate(0,825) scale(1,-1)"/>
+              </svg>
                 <svg
                   v-if="ayah.sajda"
                   width="20"
@@ -141,6 +152,10 @@
                 </svg>
               </template>
             </span>
+              </div>
+             
+            </template>
+          
               <div class="col text-center">
                                 <b-badge variant="info" class=" 
                 ">{{surah.number}}</b-badge>
@@ -150,130 +165,30 @@
           <!-- </b-card-text>
       </b-card>  -->
         </div>
-      </b-row>
-    </b-container>
-  </div>
 </template>
 
 <script>
-import AudioPlayer from "@/components/player";
-export default {
-  watch: {
-    scrollerHeight: { 
-     immediate:true,
-     handler:function(newValue){
-       console.log(newValue);
-     },
-    },
-    
-  },
-  components: {
-    AudioPlayer
-  },
-  data() {
-    return {
-      ayahaAudio: "",
-      ayahaAudioStatus: false,
-      ayahNumber: "",
-      surah:'',
-      scrollerHeight:555,
-    };
-  },
-  async asyncData({ $axios, params }) {
-    try {
-      const response = await $axios.$get(
-        `https://api.alquran.cloud/v1/page/${params.id}/${params.lang}.asad`
-      );
-      // console.log(response);
-      return { surah: response.data };
-    } catch (err) {
-      // if (err.response.status === 404) {
-      //   error({ statusCode: 404, message: "Design not found" });
-      // } else {
-      //   error({ statusCode: 500, message: "Internal server error" });
-      // }
-    }
-  },
+    export default {
   computed: {
-    // scroll area height
-    // (business needs: phone screen height minus the height of the head and the bottom of the tabbar title, of course, two highly dynamic can also get in)
-    // scrollerHeight: function() {
-    //   if (process.client) {
-    //     return window.innerHeight - 46 - 50 + "px";
-    //   }
-    // }
-  },
-  mounted() {
-    if(this.surah)
-    this.getQuranAudio(this.surah.ayahs[0].number);
-
-    const that = this;
-    window.onresize = () =>{
-      return (()=>{
-        that.scrollerHeight = that.$refs.app.clientHeight;
-      });
-    };
-  },
-  methods: {
-    getQuranAudio(ayahNum) {
-      this.ayahNumber = ayahNum;
-    //  var t =  this.surah.ayahs.filter(function(item , index){
-    //     if (Number(item.number) === Number(ayahNum)) {
-    //       return true;
-    //       }
-    //   });
-      
-
-    if (this.surah.ayahs.filter(e => Number(e.number) === Number(ayahNum)).length > 0) {
-        this.ayahaAudioStatus = false;
-        this.$axios
-        .$get(`https://api.alquran.cloud/v1/ayah/${ayahNum}/ar.alafasy`)
-        .then(
-        res => (
-          (this.ayahaAudio = res.data.audio), (this.ayahaAudioStatus = true)
-        )
-        )
-        .catch(e => console.log(e))
-        .finally(() => console.log(this));
-
-    }else{
-    this.getPage(this.$route.params.surah,this.$route.params.lang,Number(this.$route.params.id)+1);
-      console.log('noneee');
-
+    // a computed getter
+    fillterd() {
+      // `this` points to the vm instance
+      return  this.surah.ayahs.reduce((r, a) => {
+      r[a.surah.number] = [...r[a.surah.number] || [], a];
+      return r;
+      }, {});
     }
-    //   if(t)
-   
-    },
-        getPage(surah ,language,id ) {
-          console.log(surah ,id , language);
-          this.$router.push({ name: 'surah-page-lang-id', params: { surah:surah ,lang:language,id:id} });
-        // this.$axios
-        //   .$get(
-          //   `http://api.alquran.cloud/v1/page/${page}/${this.$route.params.lang}.asad`
-          
-      //     )
-      //   .then(
-      //     res => (
-      //       (this.$router.push({ name: 'user', params: { surah:surah ,lang:language} }))
-      //     )
-      //   )
-      //   .catch(e => console.log(e))
-      //   .finally(() => console.log(this));
+  },
+  props: {
+      surah:{},
+      meta:null,
+      ayahNumber:null
+  },
+        
     }
-  }
-};
 </script>
 
 <style lang="css" scoped>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
 .title {
   font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -305,15 +220,17 @@ export default {
   background-size: 100% 100%;
   font-family: "Al Qalam Quran";
   src: url("~/assets/Al Qalam Quran.ttf");
+  /* /home/dev-ibrahim/Desktop/quran/assets/font-quran/xb_zar-webfont.ttf */
 }
 @font-face {
   font-family: "Al Qalam Quran";
   src: url("~/assets/Al Qalam Quran.ttf");
-  font-weight: bold;
-  font-style: italic, oblique;
+  /* font-weight: bold; */
+  /* font-style: italic, oblique; */
 }
 
 .ayaha-active-color{
-  background-color: aquamarine;
+    background-color: #6ab04c !important;
+    color: #fff !important;
 }
 </style>

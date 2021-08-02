@@ -120,8 +120,8 @@ const convertTimeHHMMSS = (val) => {
 					return this.audio.play();
 					
 				} catch (error) {
-					console.log("error");
-					console.log(error);
+					// console.log("error");
+					// console.log(error);
 				}
 				}
 			this.audio.pause();
@@ -138,8 +138,8 @@ const convertTimeHHMMSS = (val) => {
 		nextAudio(){
 			var ayahNext = this.ayah +1;
 			this.getQuranAudio(ayahNext);
-			 console.log("vvvvvvvvvvvvvvvvvv");
-			 console.log(this.audio);
+			//  console.log("vvvvvvvvvvvvvvvvvv");
+			//  console.log(this.audio);
 		},
 		download() {
 			this.stop();
@@ -192,7 +192,7 @@ const convertTimeHHMMSS = (val) => {
 		this.audio.addEventListener('play', () => { this.playing = true; });
 	},
 	  beforeDestroy() {
-    console.log('Main Vue destroyed')
+    // console.log('Main Vue destroyed')
   }
     }
 </script>

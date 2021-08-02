@@ -8,10 +8,23 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      { hid: 'description', name: 'description', content: '' },
+      { hid: 'http-equiv=Content-Type', name: 'cccc', content: "text/html;charset=UTF-8" },
+      // https://tanzil.net/res/text/metadata/quran-data.js
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+      { rel: 'stylesheet', type: 'text/css', href: 'https://unpkg.com/select2@4.0.3/dist/css/select2.min.css' }
+    ],
+    script: [
+      {
+        src:
+          'https://unpkg.com/jquery@3.1.1/dist/jquery.js'
+      },
+      {
+        src:
+          'https://unpkg.com/select2@4.0.3/dist/js/select2.js'
+      },
     ]
   },
 
