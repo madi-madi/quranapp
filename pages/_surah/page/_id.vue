@@ -132,7 +132,7 @@ export default {
     if (this.surah.ayahs.filter(e => Number(e.number) === Number(ayahNum)).length > 0) {
         this.ayahaAudioStatus = false;
         this.$axios
-        .$get(`https://api.alquran.cloud/v1/ayah/${ayahNum}/ar.alafasy`)
+        .$get(`http://api.alquran.cloud/v1/ayah/${ayahNum}/ar.alafasy`)
         .then(
         res => (
           (this.ayahaAudio = res.data.audio), (this.ayahaAudioStatus = true)
