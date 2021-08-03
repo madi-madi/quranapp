@@ -9,7 +9,9 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
-      { hid: 'http-equiv=Content-Type', name: 'cccc', content: "text/html;charset=UTF-8" },
+      { "http-equiv": 'Content-Type', content: 'text/html;charset=UTF-8' },
+      { "http-equiv": "Content-Security-Policy", content: "upgrade-insecure-requests" },
+
       // https://tanzil.net/res/text/metadata/quran-data.js
     ],
     link: [
