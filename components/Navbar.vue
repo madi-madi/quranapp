@@ -12,7 +12,9 @@
         <!-- <b-nav-item href="#">Link</b-nav-item>
         <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
         <slot></slot>
-
+        <select2 :options="fillterd" elm="edition" v-model="selectedEdition" :change-surah="changeSurah" >
+        <option disabled value="0">Select one</option>
+        </select2>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
@@ -32,13 +34,42 @@
 </template>
 <script>
 export default {
+  methods: {
+    changeSurah(){
+      console.log(5555555555555555555);
+     this.changSelectEdition(this.selectedEdition);
+
+    }
+  },
   watch: {
+     editionSel: { 
+     immediate:true,
+     handler:function(newValue){
+     this.selectedEdition = newValue;
+    // this.getPage(this.$route.params.surah,this.$route.params.lang,obj.startPage);
+
+       
+     },
+    },
   },
   props: {
-    metaData:{}
+    metaData:{},
+    edition:{},
+    changSelectEdition:{},
+    editionSel:''
+  },
+    computed: {
+    fillterd() {
+      return  this.edition.map((item, a) => {
+        item.text = item.name 
+        item.id = a+1 
+        return item;
+      }, {});
+    }
   },
   data() {
     return {
+      selectedEdition:1
     }
   },
   

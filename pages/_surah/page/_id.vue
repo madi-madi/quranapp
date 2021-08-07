@@ -1,11 +1,14 @@
 <template>
   <div>
-  <Navbar :meta-data="meta">
+  <Navbar :meta-data="meta" :edition="edition" :chang-select-edition="changSelectEdition" :edition-sel="editionSelected" >
         <div class="col"> 
-        <select2 :options="meta.data.surahs.references" v-model="selected" :change-surah="changeSurah">
+        <select2 :options="meta.data.surahs.references" elm="meta" v-model="selected" :change-surah="changeSurah">
         <option disabled value="0">Select one</option>
         </select2>
 
+        <!-- <b-nav-item-dropdown text="Lang" right>
+          <b-dropdown-item v-for(index , item0) v-on:click="SelectEdition(item)" >{{}}</b-dropdown-item>
+        </b-nav-item-dropdown> -->
         </div>
   </Navbar>
 
@@ -55,7 +58,6 @@ export default {
     scrollerHeight: { 
      immediate:true,
      handler:function(newValue){
-       console.log(newValue);
      },
     },
     // selected: { 
@@ -82,15 +84,17 @@ export default {
        message: 'Hello',
       scrollerHeight:555,
       meta :json,
+      editionSel:'',
+      editionSelected:'',
       selected:Number(this.$route.params.surah),
 
     };
   },
     async asyncData({ $axios, params }) {
     try {
+      const responseEdition = await $axios.$get(`https://api.alquran.cloud/v1/edition?format=audio&language=ar&type=versebyverse`);
       const response = await $axios.$get(`http://api.alquran.cloud/v1/page/${params.id}/ar.asad`);
-      console.log(response);
-      return { surah: response.data };
+      return { surah: response.data,edition:responseEdition.data };
     } catch (err) {
       if (err.response.status === 404) {
         error({ statusCode: 404, message: 'Design not found' });
@@ -113,7 +117,6 @@ export default {
   },
   methods: {
     changeSurah(){
-      // console.log(this.selected);
       var newValue = this.selected;
            var obj = this.meta.data.surahs.references[Number(newValue) -1];
           this.$router.push({ name: 'surah-page-id', params: { surah:obj.id ,lang:this.$route.params.lang,id:obj.startPage} });
@@ -122,6 +125,14 @@ export default {
     },
     getQuranAudio(ayahNum) {
       this.ayahNumber = ayahNum;
+      var stored = JSON.parse(localStorage.getItem("editionSel"));
+      if (this.editionSel || stored) {
+        var edition =stored.edition?? this.editionSel;
+        this.editionSelected = Number(stored.selected)??1;
+      }else{
+        var edition = this.editionSel = this.edition[0].identifier;
+        this.editionSelected = 1;
+      }
     //  var t =  this.surah.ayahs.filter(function(item , index){
     //     if (Number(item.number) === Number(ayahNum)) {
     //       return true;
@@ -132,33 +143,25 @@ export default {
     if (this.surah.ayahs.filter(e => Number(e.number) === Number(ayahNum)).length > 0) {
         this.ayahaAudioStatus = false;
         this.$axios
-        .$get(`http://api.alquran.cloud/v1/ayah/${ayahNum}/ar.alafasy`)
+        .$get(`http://api.alquran.cloud/v1/ayah/${ayahNum}/${edition}`)
         .then(
         res => (
           (this.ayahaAudio = res.data.audio), (this.ayahaAudioStatus = true)
         )
         )
-        .catch(e => console.log(e))
-        .finally(() => console.log(this));
 
     }else{
     this.getPage(this.$route.params.surah,Number(this.$route.params.id)+1);
-      console.log('noneee');
 
     }
     //   if(t)
    
     },
         getPage(surah ,id ) {
-          console.log(surah ,id);
           // numberOfAyahs
           var obj = this.meta.data.surahs.references[Number(surah) - 1];
-            console.log("obj6666666666");
-  console.log(obj);
           if(Number(this.ayahNumber) > Number(obj.numberOfAyahs)){
           var obj = this.meta.data.surahs.references[Number(surah)];
-  console.log("obj");
-  console.log(obj);
             surah = obj.id;
             id=obj.startPage;
             
@@ -175,14 +178,19 @@ export default {
       //       (this.$router.push({ name: 'user', params: { surah:surah ,lang:language} }))
       //     )
       //   )
-      //   .catch(e => console.log(e))
-      //   .finally(() => console.log(this));
+    },
+
+    changSelectEdition(id){
+     this.editionSel= this.edition[id-1].identifier;
+     localStorage.setItem("editionSel", JSON.stringify({"edition":this.editionSel,"selected":id}));
+     this.getQuranAudio(this.ayahNumber);
     }
   }
 };
 </script>
 
 <style lang="css" scoped>
+
 .container {
   margin: 0 auto;
   min-height: 100vh;
@@ -190,6 +198,7 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
+  overflow-x: hidden !important;
 }
 
 

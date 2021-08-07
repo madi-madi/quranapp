@@ -11,7 +11,7 @@
               {{ meta.data.surahs.references[index-1].text }}
             </p>
             <span class="p-0" v-for="(ayah, index) in sur" :key="index">
-              <p v-if="ayah.numberInSurah === 1">
+              <p :class="{'ayaha-active-color':ayah.number === ayahNumber}" v-if="ayah.numberInSurah === 1">
                 {{ ayah.text }}
                 <!-- <b-badge variant="warning">{{ ayah.numberInSurah }}</b-badge> -->
               <svg width="6%" height="6%" viewBox="0 -400 1250 1625" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

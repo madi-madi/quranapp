@@ -5,6 +5,10 @@
 </template>
 
 <style>
+body{
+  overflow-x: hidden !important;
+
+}
 html {
 
     height: 100%;
