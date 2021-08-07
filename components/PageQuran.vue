@@ -7,9 +7,11 @@
           <div class="col pr-5 pl-5 pb-2 pt-3 mt-4 mb-5 text-justify">
             <template >
               <div v-for="(sur , index) in fillterd" :key="index">
-              <p class="mt-4 " v-once>
+              <p class="mt-4   "
+              :class="{'frame-name-surah text-center':sur[0].numberInSurah === 1}"
+               v-once>
               {{ meta.data.surahs.references[index-1].text }}
-            </p>
+              </p>
             <span class="p-0" v-for="(ayah, index) in sur" :key="index">
               <p :class="{'ayaha-active-color':ayah.number === ayahNumber}" v-if="ayah.numberInSurah === 1">
                 {{ ayah.text }}
@@ -216,7 +218,7 @@
 }
 
 .frame {
-  background-image: url(~/assets/8fac60ef09ce30114277835318b75fa3.png);
+  background-image: url(~/assets/simpleflowerframe.png);
   background-size: 100% 100%;
   font-family: "Al Qalam Quran";
   src: url("~/assets/Al Qalam Quran.ttf");
@@ -232,5 +234,11 @@
 .ayaha-active-color{
     background-color: #6ab04c !important;
     color: #fff !important;
+}
+
+.frame-name-surah {
+  background-image: url(~/assets/8fac60ef09ce30114277835318b75fa3.png);
+  background-size: 100% 100%;
+  /* /home/dev-ibrahim/Desktop/quran/assets/font-quran/xb_zar-webfont.ttf */
 }
 </style>
