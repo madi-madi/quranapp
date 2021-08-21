@@ -13,13 +13,15 @@
               {{ meta.data.surahs.references[index-1].text }}
               </p>
             <span class="p-0 " v-for="(ayah, index) in sur" :key="index">
-              <p class="text-center mb-0" v-if="ayah.numberInSurah === 1">
-                {{ basmala }}
+              <p class="text-center mb-0" v-if="ayah.numberInSurah === 1"
+                v-html="$options.filters.textColorNameAllah(basmala)"
+              >
               </p>
 
               <template >
-                <span  :class="{'ayaha-active-color':ayah.number === ayahNumber}">
-                  {{ ayah.numberInSurah === 1?ayah.text.split(basmala)[1]:ayah.text }}
+                <span  :class="{'ayaha-active-color':ayah.number === ayahNumber}"
+                v-html="$options.filters.textColorNameAllah(ayah.numberInSurah === 1?ayah.text.split(basmala)[1]:ayah.text)"
+                >
                   
                   </span>
                 <!-- <b-badge variant="warning">{{ ayah.numberInSurah }}</b-badge> -->
