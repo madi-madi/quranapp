@@ -7,34 +7,21 @@
           <div class="col pr-5 pl-5 pb-2 pt-3 mt-4 mb-5 text-justify">
             <template >
               <div v-for="(sur , index) in surah" :key="index">
-              <p class="mt-4   "
+              <p class="mt-2 "
               :class="{'frame-name-surah text-center':sur[0].numberInSurah === 1}"
                v-once>
               {{ meta.data.surahs.references[index-1].text }}
               </p>
-            <span class="p-0" v-for="(ayah, index) in sur" :key="index">
-              <p :class="{'ayaha-active-color':ayah.number === ayahNumber}" v-if="ayah.numberInSurah === 1">
-                {{ ayah.text }}
-                <!-- <b-badge variant="warning">{{ ayah.numberInSurah }}</b-badge> -->
-              <svg width="6%" height="6%" viewBox="0 -400 1250 1625" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <circle r="605" stroke="#000" cx="625" cy="421" stroke-width="30" fill="#d5d554"/>
-
-              <circle r="510" stroke="#000" cx="625" cy="421" stroke-width="30" fill="#ffffff"/>
-              <text x="50%" y="-25%" text-anchor="middle" stroke="#51c5cf" stroke-width="2px"  font-weight="bold" font-size="650px" dy="1.6em">{{ ayah.numberInSurah }}</text>
-              <g id="header">
-              <path d="m1006.2,46.902c96.075,45.999,160.74,23.972,201.66-30.111-83.3-13.413-157.3-96.153-229.57-148.02-157.22-112.81-249.67-57.8-353.51-236.32-103.83,178.49-196.28,123.48-353.5,236.29-72.29,51.864-146.26,134.6-229.5,148.02,40.928,54.082,105.59,76.11,201.66,30.11,107.34,116.17,142.73-192.06,381.34,10.364,238.62-202.39,274.01,105.84,381.38-10.33z" stroke="#000" stroke-width="30" fill="#d5d554"/>
-              <circle r="69" cx="625" cy="-127" fill="#000"/>
-
-
-              <path id="repu" d="M466.92-110.36c-75.47,27.435-114,46.932-165.42,83.529" stroke="#000" stroke-linecap="round" stroke-width="43"/>
-              <use xlink:href="#repu" transform="translate(1248,0) scale(-1,1)"/>
-              </g>
-              <use xlink:href="#header" transform="translate(0,825) scale(1,-1)"/>
-              </svg>
+            <span class="p-0 " v-for="(ayah, index) in sur" :key="index">
+              <p class="text-center mb-0" v-if="ayah.numberInSurah === 1">
+                {{ basmala }}
               </p>
 
-              <template v-else>
-                <span  :class="{'ayaha-active-color':ayah.number === ayahNumber}">{{ ayah.text }}</span>
+              <template >
+                <span  :class="{'ayaha-active-color':ayah.number === ayahNumber}">
+                  {{ ayah.numberInSurah === 1?ayah.text.split(basmala)[1]:ayah.text }}
+                  
+                  </span>
                 <!-- <b-badge variant="warning">{{ ayah.numberInSurah }}</b-badge> -->
               <svg width="6%" height="6%" viewBox="0 -400 1250 1625" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
               <circle r="605" stroke="#000" cx="625" cy="421" stroke-width="30" fill="#d5d554"/>
@@ -171,6 +158,11 @@
 
 <script>
     export default {
+  data () {
+    return {
+      basmala:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+    }
+  },
   computed: {
     // a computed getter
     fillterd() {
@@ -221,14 +213,14 @@
   background-image: url(~/assets/8fac60ef09ce30114277835318b75fa3.png);
   background-size: 100% 100%;
   font-family: "Al Qalam Quran";
-  font-size: 14pt;
+  font-size: 12pt;
   /* src: url("~/assets/AlQalamQuran.ttf"); */
   /* /home/dev-ibrahim/Desktop/quran/assets/font-quran/xb_zar-webfont.ttf */
 }
 @font-face {
   font-family: "Al Qalam Quran";
-  src: url("~/assets/AlQalamQuran.ttf");
-   font-weight: bold; 
+  src: url("~/assets/ar-Othmani.ttf");
+   /* font-weight: bold;  */
   /* font-style: italic, oblique; */
 }
 
