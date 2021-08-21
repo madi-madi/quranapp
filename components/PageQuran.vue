@@ -6,7 +6,7 @@
 
           <div class="col pr-5 pl-5 pb-2 pt-3 mt-4 mb-5 text-justify">
             <template >
-              <div v-for="(sur , index) in fillterd" :key="index">
+              <div v-for="(sur , index) in surah" :key="index">
               <p class="mt-4   "
               :class="{'frame-name-surah text-center':sur[0].numberInSurah === 1}"
                v-once>
@@ -175,10 +175,10 @@
     // a computed getter
     fillterd() {
       // `this` points to the vm instance
-      return  this.surah.ayahs.reduce((r, a) => {
-      r[a.surah.number] = [...r[a.surah.number] || [], a];
-      return r;
-      }, {});
+      // return  this.surah.ayahs.reduce((r, a) => {
+      // r[a.surah.number] = [...r[a.surah.number] || [], a];
+      // return r;
+      // }, {});
     }
   },
   props: {
@@ -218,16 +218,17 @@
 }
 
 .frame {
-  background-image: url(~/assets/simpleflowerframe.png);
+  background-image: url(~/assets/8fac60ef09ce30114277835318b75fa3.png);
   background-size: 100% 100%;
   font-family: "Al Qalam Quran";
-  src: url("~/assets/Al Qalam Quran.ttf");
+  font-size: 14pt;
+  /* src: url("~/assets/AlQalamQuran.ttf"); */
   /* /home/dev-ibrahim/Desktop/quran/assets/font-quran/xb_zar-webfont.ttf */
 }
 @font-face {
   font-family: "Al Qalam Quran";
-  src: url("~/assets/Al Qalam Quran.ttf");
-  /* font-weight: bold; */
+  src: url("~/assets/AlQalamQuran.ttf");
+   font-weight: bold; 
   /* font-style: italic, oblique; */
 }
 

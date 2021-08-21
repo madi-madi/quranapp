@@ -12,9 +12,7 @@
         <!-- <b-nav-item href="#">Link</b-nav-item>
         <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
         <slot></slot>
-        <select2 :options="fillterd" elm="edition" v-model="selectedEdition" :change-surah="changeSurah" >
-        <option disabled value="0">Select one</option>
-        </select2>
+
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
@@ -36,7 +34,6 @@
 export default {
   methods: {
     changeSurah(){
-      console.log(5555555555555555555);
      this.changSelectEdition(this.selectedEdition);
 
     }
@@ -54,22 +51,15 @@ export default {
   },
   props: {
     metaData:{},
-    edition:{},
-    changSelectEdition:{},
-    editionSel:''
+    // edition:{},
+    // changSelectEdition:{},
+    // editionSel:''
   },
     computed: {
-    fillterd() {
-      return  this.edition.map((item, a) => {
-        item.text = item.name 
-        item.id = a+1 
-        return item;
-      }, {});
-    }
+
   },
   data() {
     return {
-      selectedEdition:1
     }
   },
   

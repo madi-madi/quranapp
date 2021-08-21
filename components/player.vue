@@ -135,6 +135,17 @@ const convertTimeHHMMSS = (val) => {
 		}
 	},
 	methods: {
+		visibilityListener() {
+		// switch(document.visibilityState) {
+		// case "hidden":
+		// this.audio.play();
+		// break;
+		// case "visible":
+		// this.audio.play();
+		// break;
+		// }
+		// https://stackoverflow.com/questions/1060008/is-there-a-way-to-detect-if-a-browser-window-is-not-currently-active?rq=1
+		},
 		nextAudio(){
 			var ayahNext = this.ayah +1;
 			this.getQuranAudio(ayahNext);
@@ -184,7 +195,8 @@ const convertTimeHHMMSS = (val) => {
 		this.innerLoop = this.loop;
 	},
 	mounted() {
-		this.audio = this.$el.querySelectorAll('audio')[0];
+		// document.addEventListener("visibilitychange", this.visibilityListener);
+		this.audio = this.$refs.audiofile;
 		this.audio.addEventListener('ended', this.nextAudio);
 		this.audio.addEventListener('timeupdate', this.update);
 		this.audio.addEventListener('loadeddata', this.load);
