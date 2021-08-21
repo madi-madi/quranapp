@@ -120,20 +120,7 @@ import AudioPlayer from "@/components/player";
     },
     visibilityListener() {
       switch(document.visibilityState) {
-      // case "hidden":
-      //   var objAudio = this.objAudio;
-      //   var ayahNum = this.ayahNumber;
-      // if(this.surahPage.ayahs.filter(e => Number(e.number) === Number(ayahNum)).length > 0)
-      //   var page = Number(objAudio.page);
-      //   else
-      //   var page = Number(objAudio.page)+1;
 
-      //   var newUrl = "/surah/:surah/page/:id";
-      //   newUrl = newUrl.replace(':surah',objAudio.surah.number); 
-      //   newUrl =  newUrl.replace(':id',page); 
-      //   window.history.replaceState({}, '',newUrl);
-      //   this.getQuranByPage({'id':page});
-      // break;
       case "visible":
         var objAudio = this.objAudio;
         var ayahNum = this.ayahNumber;
