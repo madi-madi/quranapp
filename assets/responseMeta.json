@@ -16,7 +16,7 @@
     {"id":18,"text":"سورة الكهف","englishName":"Al-Kahf","englishNameTranslation":"The Cave","numberOfAyahs":110,"startPage":293,"revelationType":"Meccan"},
     {"id":19,"text":"سورة مريم","englishName":"Maryam","englishNameTranslation":"Mary","numberOfAyahs":98,"startPage":305,"revelationType":"Meccan"},
     {"id":20,"text":"سورة طه","englishName":"Taa-Haa","englishNameTranslation":"Taa-Haa","numberOfAyahs":135,"startPage":312,"revelationType":"Meccan"},
-    {"id":21,"text":"سورة الأنبياء","englishName":"Al-Anbiyaa","englishNameTranslation":"The Prophets","numberOfAyahs":112,"startPage":1,"revelationType":"Meccan"},
+    {"id":21,"text":"سورة الأنبياء","englishName":"Al-Anbiyaa","englishNameTranslation":"The Prophets","numberOfAyahs":112,"startPage":322,"revelationType":"Meccan"},
     {"id":22,"text":"سورة الحج","englishName":"Al-Hajj","englishNameTranslation":"The Pilgrimage","numberOfAyahs":78,"startPage":332,"revelationType":"Medinan"},
     {"id":23,"text":"سورة المؤمنون","englishName":"Al-Muminoon","englishNameTranslation":"The Believers","numberOfAyahs":118,"startPage":342,"revelationType":"Meccan"},
     {"id":24,"text":"سورة النور","englishName":"An-Noor","englishNameTranslation":"The Light","numberOfAyahs":64,"startPage":350,"revelationType":"Medinan"},
