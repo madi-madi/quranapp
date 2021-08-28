@@ -57,7 +57,7 @@ import AudioPlayer from "@/components/player";
   export default {
     async fetch ({store,params}) {
     // dispatch action fetchAllPosts
-    await store.dispatch('quran/getQuranByPage',{"id":params.id})
+    await store.dispatch('quran/getQuranByPage',{"id":params.id,"surah":params.surah})
     await store.dispatch('quran/getEdition')
     
   },
@@ -69,7 +69,7 @@ import AudioPlayer from "@/components/player";
     changeSurah(){
       var newValue = this.selected;
            var obj = this.meta.data.surahs.references[Number(newValue) -1];
-          this.$router.replace({ name: 'surah-surah-page-id', params: { surah:obj.id ,lang:this.$route.params.lang,id:obj.startPage} });
+          this.$router.push({ name: 'surah-surah-page-id', params: { surah:obj.id ,id:obj.startPage} });
 
     },
 
@@ -155,7 +155,7 @@ import AudioPlayer from "@/components/player";
     AudioPlayer
   },
   computed:{
-    ...mapGetters('quran', ["surah","surahPage","objAudio","ayahaAudio","ayahNumber","samePage","ayahaAudioStatus","meta","edition","editionSel","editionSelected","errors",'status']),
+    ...mapGetters('quran', ["surahNum","surah","surahPage","objAudio","ayahaAudio","ayahNumber","samePage","ayahaAudioStatus","meta","edition","editionSel","editionSelected","errors",'status']),
 
 
   },

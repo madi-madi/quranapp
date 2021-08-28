@@ -4,6 +4,7 @@ const quran = {
     namespaced: true,
     state: {
         ayahaAudio: "",
+        surahNum: "",
         objAudio:{},
         ayahaAudioStatus: false,
         ayahNumber: "",
@@ -27,6 +28,7 @@ const quran = {
         ayahaAudio: state => state.ayahaAudio,
         ayahaAudioStatus: state => state.ayahaAudioStatus,
         ayahNumber: state => state.ayahNumber,
+        surahNum: state => state.surahNum,
         samePage: state => state.samePage,
         surah: state => state.surah,
         surahPage: state => state.surahPage,
@@ -55,13 +57,18 @@ const quran = {
             state.ayahNumber = data.ayahNum;
         },
         setSurah(state, surah) {
-            state.ayahNumber = surah.ayahs[0].number;
             state.surahPage = surah;
             state.surah = 
               surah.ayahs.reduce((r, a) => {
             r[a.surah.number] = [...r[a.surah.number] || [], a];
             return r;
             }, {});
+            // var s = state.surahNum;
+            for (const property in state.surah) {
+                if(property == state.surahNum)
+                state.ayahNumber = state.surah[property][0].number;
+              }
+
         },
         setSurahTab(state, surah) {
             state.surahPage = surah;
@@ -87,6 +94,10 @@ const quran = {
                 item.id = a+1 
                 return item;
               }, {});
+              for (const property in state.edition) {
+                if(state.edition[property].identifier == "ar.abdulsamad")
+                state.editionSel = state.edition[property];
+              }
         },
         setSurahMeta(state, data) {
             state.surahMeta = state.meta.data.surahs.references[Number(data.surah) - 1];
@@ -94,12 +105,14 @@ const quran = {
         setErrors(state,errors){
             state.errors = errors;
         },
+        setPage(state,data){
+            console.log(data);
+            state.surahNum = Number(data.surah);
+        },
 
     },
     actions: {
         async getAudioQuranByIyah({ commit  }, payload) {
-
-            // commit('setStatus', false);
             await this.$axios.$get(`http://api.alquran.cloud/v1/ayah/${payload.ayahNum}/ar.abdulsamad`).then(response => {
                 var data = response.data;
                 commit('setAyahaAudio', data);
@@ -109,8 +122,8 @@ const quran = {
         },
 
         async getQuranByPage({ commit  }, payload) {
-            console.log("payload");
-            console.log(payload);
+            commit('setPage', payload);
+
             // commit('setStatus', false);
             await this.$axios.$get(`http://api.alquran.cloud/v1/page/${payload.id}/ar.asad`).then(response => {
                 var data = response.data;
@@ -120,8 +133,6 @@ const quran = {
                });
         },
         async getQuranByPageTab({ commit  }, payload) {
-            console.log("payload");
-            console.log(payload);
             // commit('setStatus', false);
             await this.$axios.$get(`http://api.alquran.cloud/v1/page/${payload.id}/ar.asad`).then(response => {
                 var data = response.data;
