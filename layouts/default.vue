@@ -12,7 +12,8 @@ body{
 html {
 
     height: 100%;
-  direction: rtl !important;
+    width: 100%;
+  direction: ltr !important;
   font-family:
     'Source Sans Pro',
     -apple-system,

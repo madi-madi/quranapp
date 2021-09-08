@@ -80,7 +80,7 @@
     {"id":82,"text":"سورة الإنفطار","englishName":"Al-Infitaar","englishNameTranslation":"The Cleaving","numberOfAyahs":19,"startPage":587,"revelationType":"Meccan"},
     {"id":83,"text":"سورة المطففين","englishName":"Al-Mutaffifin","englishNameTranslation":"Defrauding","numberOfAyahs":36,"startPage":587,"revelationType":"Meccan"},
     {"id":84,"text":"سورة الانشقاق","englishName":"Al-Inshiqaaq","englishNameTranslation":"The Splitting Open","numberOfAyahs":25,"startPage":589,"revelationType":"Meccan"},
-    {"id":85,"text":"سورة البرود","englishName":"Al-Burooj","englishNameTranslation":"The Constellations","numberOfAyahs":22,"startPage":590,"revelationType":"Meccan"},
+    {"id":85,"text":"سورة البروج","englishName":"Al-Burooj","englishNameTranslation":"The Constellations","numberOfAyahs":22,"startPage":590,"revelationType":"Meccan"},
     {"id":86,"text":"سورة الطارق","englishName":"At-Taariq","englishNameTranslation":"The Morning Star","numberOfAyahs":17,"startPage":591,"revelationType":"Meccan"},
     {"id":87,"text":"سورة الأعلى","englishName":"Al-A'laa","englishNameTranslation":"The Most High","numberOfAyahs":19,"startPage":591,"revelationType":"Meccan"},
     {"id":88,"text":"سورة الغاشية","englishName":"Al-Ghaashiya","englishNameTranslation":"The Overwhelming","numberOfAyahs":26,"startPage":592,"revelationType":"Meccan"},

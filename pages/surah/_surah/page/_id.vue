@@ -1,26 +1,35 @@
 <template>
   <div>
-  <Navbar :meta-data="meta"  >
-        <div class="col"> 
-        <select2 :options="meta.data.surahs.references" elm="meta" v-model="selected" :change-surah="changeSurah">
-        <option disabled value="0">Select one</option>
+    <Navbar :meta-data="meta">
+      <div class="col">
+        <select2
+          :options="meta.data.surahs.references"
+          elm="meta"
+          v-model="selected"
+          :change-surah="changeSurah"
+        >
+          <option disabled value="0">Select one</option>
         </select2>
 
         <!-- <b-nav-item-dropdown text="Lang" right>
           <b-dropdown-item v-for(index , item0) v-on:click="SelectEdition(item)" >{{}}</b-dropdown-item>
         </b-nav-item-dropdown> -->
-        </div>
-        <div class="col" v-if="edition" >
-        <select2 :options="edition" elm="edition" v-model="selectedEdition" :change-surah="changSelectEdition" >
-        <option disabled value="0">Select one</option>
+      </div>
+      <div class="col" v-if="edition">
+        <select2
+          :options="edition"
+          elm="edition"
+          v-model="selectedEdition"
+          :change-surah="changSelectEdition"
+        >
+          <option disabled value="0">Select one</option>
         </select2>
-        </div>
-  </Navbar>
+      </div>
+    </Navbar>
     <b-container fluid class="p-0 mt-2">
       <b-row class="justify-content-center overflow-auto text-center ">
         <div class="col col-lg-4 col-md-6 col-sm-12  ">
           <div id="audio" class="player-wrapper">
-
             <AudioPlayer
               :status="!!ayahaAudio"
               :ayah="ayahNumber"
@@ -30,155 +39,355 @@
             ></AudioPlayer>
           </div>
         </div>
-
       </b-row>
     </b-container>
     <b-container fluid class="p-0 mt-2">
-
       <b-row
-        class="justify-content-center  mb-5 overflow-auto quran-banner" ref="app"
+        class="justify-content-center  mb-5 overflow-auto quran-banner"
+        ref="app"
         :style="{ height: scrollerHeight }"
       >
-
         <!-- Content here -->
 
         <!-- <div class="col-12 col-lg-4 col-md-6 col-sm-12 frame h-100 " :style="{height: scrollerHeight}" @mouseenter="mouseEnter" @mousemove="mouseMove" @mouseleave="mouseLeave"  > -->
-          <PageQuran :surah="surah" :meta="meta" :ayah-number="ayahNumber"></PageQuran>
+        <div class="col-xs-12 col-lg-4 col-md-6 col-sm-12 mt-0 pl-0 ">
+          <a
+            v-on:click.prevent="goPrevious()"
+            title="السابق"
+            class="previous position-absolute"
+            href="#"
+          >
+            <svg
+              version="1.1"
+              width="100%"
+              id="Layer_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 473.654 473.654"
+              style="enable-background:new 0 0 473.654 473.654;"
+              xml:space="preserve"
+            >
+              <circle
+                style="fill:#4ABC96;"
+                cx="236.827"
+                cy="236.827"
+                r="236.827"
+              />
+              <path
+                style="fill:#FFFFFF;"
+                d="M338.566,193.946c-25.904,0-51.808,0-77.712,0c-4.162,0-7.965,0.546-11.495,1.455
+              c0-13.399,0-26.798,0-40.2c0-24.666-30.515-37.411-47.994-19.932c-27.011,27.011-54.018,54.022-81.029,81.033
+              c-10.841,10.841-10.549,28.907,0.213,39.669c27.011,27.007,54.018,54.018,81.029,81.025c9.446,9.446,20.796,9.947,30.062,5.553
+              c9.846-3.336,17.722-11.753,17.722-25.291c0-13.489,0-26.974,0-40.462c3.354,0.819,6.959,1.309,10.89,1.309
+              c25.904,0,51.808,0,77.712,0C392.293,278.105,392.775,193.946,338.566,193.946z"
+              />
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+            </svg>
+          </a>
+          <a
+            v-on:click.prevent="goNext()"
+            title="التالي"
+            class="next position-absolute"
+            href="#"
+          >
+            <svg
+              version="1.1"
+              width="100%"
+              id="Layer_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 473.654 473.654"
+              style="enable-background:new 0 0 473.654 473.654;"
+              xml:space="preserve"
+            >
+              <circle
+                style="fill:#4ABC96;"
+                cx="236.827"
+                cy="236.827"
+                r="236.827"
+              />
+              <path
+                style="fill:#FFFFFF;"
+                d="M358.075,216.091c-27.011-27.011-54.018-54.022-81.029-81.033
+            c-25.56-25.564-65.08,14.259-39.456,39.883c11.009,11.009,22.019,22.019,33.028,33.032c-43.353,0-86.706,0-130.055,0
+            c-36.225,0-36.543,56.109-0.404,56.109c43.491,0,86.982,0,130.47,0c-11.084,11.084-22.168,22.168-33.252,33.252
+            c-25.564,25.56,14.259,65.08,39.883,39.456c27.011-27.007,54.018-54.014,81.029-81.025
+            C369.133,244.916,368.838,226.85,358.075,216.091z"
+              />
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+            </svg>
+          </a>
+          <PageQuran
+            :surah="surah"
+            :meta="meta"
+            :ayah-number="ayahNumber"
+          ></PageQuran>
+        </div>
+        <div
+          class="col-xs-12 col-lg-4 col-md-6 col-sm-12 mt-0 border border-success p-4 m-2 text-justify tafseer "
+        >
+          {{ tafseer.text }}
+        </div>
       </b-row>
     </b-container>
-<!-- <PageQuran :surah="surah" :meta="meta" :ayah-number="ayahNumber"></PageQuran> -->
+    <!-- <PageQuran :surah="surah" :meta="meta" :ayah-number="ayahNumber"></PageQuran> -->
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters} from 'vuex';
+import { mapActions, mapGetters } from "vuex";
 import AudioPlayer from "@/components/player";
 
-  export default {
-    async fetch ({store,params}) {
+export default {
+  async fetch({ store, params }) {
     // dispatch action fetchAllPosts
-    await store.dispatch('quran/getQuranByPage',{"id":params.id,"surah":params.surah})
-    await store.dispatch('quran/getEdition')
-    
+    await store.dispatch("quran/getQuranByPage", {
+      id: params.id,
+      surah: params.surah
+    });
+    await store.dispatch("quran/getEdition");
   },
-  created () {
-  this.updateSurahMeta({surah:this.$route.params.surah});
+  created() {
+    this.updateSurahMeta({ surah: this.$route.params.surah });
   },
   methods: {
-   ...mapActions('quran', ['getQuranByPage','getQuranByPageTab','getEdition','getAudioQuranByIyah','updateAyahNumber','updateSurahMeta']),
-    changeSurah(){
+    ...mapActions("quran", [
+      "getQuranByPage",
+      "getQuranByPageTab",
+      "getAyahWthTafseer",
+      "getEdition",
+      "getAudioQuranByIyah",
+      "updateAyahNumber",
+      "updateSurahMeta"
+    ]),
+    goNext() {
+      var surah = Number(this.$route.params.surah);
+      var page = Number(this.$route.params.id);
+      if (page <= 603) {
+        page = page + 1;
+        var afterSurah = surah + 1;
+        var objSurah = this.meta.data.surahs.references[Number(surah) - 1];
+        var objAfterSurah = this.meta.data.surahs.references[
+          Number(afterSurah) - 1
+        ];
+        if (Number(objAfterSurah.startPage) === Number(objSurah.startPage)) {
+          var newArray = this.meta.data.surahs.references.filter(function(el) {
+            return el.startPage === page;
+          });
+          objAfterSurah = newArray[0];
+        }
+        if (page < Number(objAfterSurah.startPage)) {
+          this.$router.push({
+            name: "surah-surah-page-id",
+            params: { surah: objSurah.id, id: page }
+          });
+        } else if (page === Number(objAfterSurah.startPage)) {
+          this.$router.push({
+            name: "surah-surah-page-id",
+            params: { surah: objAfterSurah.id, id: page }
+          });
+        }
+      }
+    },
+    goPrevious() {
+      var surah = Number(this.$route.params.surah);
+      var page = Number(this.$route.params.id) - 1;
+      if (page > 0) {
+        var beforSurah = surah - 1;
+        var objSurah = this.meta.data.surahs.references[Number(surah) - 1];
+        var objBeforSurah = this.meta.data.surahs.references[
+          Number(beforSurah) - 1
+        ];
+        if (Number(objBeforSurah.startPage) === Number(objSurah.startPage)) {
+          var newArray = this.meta.data.surahs.references.filter(function(el) {
+            return el.startPage === page;
+          });
+          console.log(newArray);
+          objBeforSurah = newArray[0];
+        }
+        if (page > Number(objBeforSurah.startPage)) {
+          this.$router.push({
+            name: "surah-surah-page-id",
+            params: { surah: objSurah.id, id: page }
+          });
+        } else if (page === Number(objBeforSurah.startPage)) {
+          this.$router.push({
+            name: "surah-surah-page-id",
+            params: { surah: objBeforSurah.id, id: page }
+          });
+        }
+      }
+    },
+    changeSurah() {
       var newValue = this.selected;
-           var obj = this.meta.data.surahs.references[Number(newValue) -1];
-          this.$router.push({ name: 'surah-surah-page-id', params: { surah:obj.id ,id:obj.startPage} });
-
+      var obj = this.meta.data.surahs.references[Number(newValue) - 1];
+      this.$router.push({
+        name: "surah-surah-page-id",
+        params: { surah: obj.id, id: obj.startPage }
+      });
     },
 
     getQuranAudio(ayahNum) {
-      if(this.surahPage.ayahs.filter(e => Number(e.number) === Number(ayahNum)).length > 0){
-        this.getAudioQuranByIyah({"ayahNum": ayahNum});
-      }else{
-                var objAudio = this.objAudio;
-        var surah = objAudio.surah.number;
-                  var obj = this.meta.data.surahs.references[Number(surah) - 1];
-          if(Number(ayahNum) > Number(obj.numberOfAyahs)){
-          var obj = this.meta.data.surahs.references[Number(surah)];
-            surah = obj.id;
-            
-          }
-        this.selected = surah;
-        var id = Number(objAudio.page)+1;
-        var newUrl = "/surah/:surah/page/:id";
-        newUrl = newUrl.replace(':surah',surah); 
-        newUrl =  newUrl.replace(':id',id); 
-        this.getQuranByPage({'id':id});
-        this.getAudioQuranByIyah({"ayahNum": ayahNum});
-
-         window.history.replaceState({}, '',newUrl);
-
-
-
-      }
-   
-    },
-        getPage(surah ,id ,ayahNum ) {
-          // numberOfAyahs
-          var obj = this.meta.data.surahs.references[Number(surah) - 1];
-          if(Number(ayahNum) > Number(obj.numberOfAyahs)){
-
-            this.updateAyahNumber({"ayahNum": ayahNum});
-          var obj = this.meta.data.surahs.references[Number(surah)];
-            surah = obj.id;
-            id=obj.startPage;
-            
-          }
-          var self = this;
-        
-
-          this.$router.replace({ name: 'surah-surah-page-id', params: { surah:surah,id:id} });
-  },
-    changSelectEdition(){
-    },
-    visibilityListener() {
-      switch(document.visibilityState) {
-
-      case "visible":
+      if (
+        this.surahPage.ayahs.filter(e => Number(e.number) === Number(ayahNum))
+          .length > 0
+      ) {
+        this.getAudioQuranByIyah({ ayahNum: ayahNum });
+        this.getAyahWthTafseer({ id: ayahNum });
+      } else {
         var objAudio = this.objAudio;
-        var ayahNum = this.ayahNumber;
-      if(this.surahPage.ayahs.filter(e => Number(e.number) === Number(ayahNum)).length > 0)
-        var page = Number(objAudio.page);
-        else
-        var page = Number(objAudio.page)+1;
-
+        var surah = objAudio.surah.number;
+        var obj = this.meta.data.surahs.references[Number(surah) - 1];
+        if (Number(ayahNum) > Number(obj.numberOfAyahs)) {
+          var obj = this.meta.data.surahs.references[Number(surah)];
+          surah = obj.id;
+        }
+        this.selected = surah;
+        var id = Number(objAudio.page) + 1;
         var newUrl = "/surah/:surah/page/:id";
-        newUrl = newUrl.replace(':surah',objAudio.surah.number); 
-        newUrl =  newUrl.replace(':id',page); 
-        window.history.replaceState({}, '',newUrl);
-        this.getQuranByPageTab({'id':page});
-      break;
+        newUrl = newUrl.replace(":surah", surah);
+        newUrl = newUrl.replace(":id", id);
+        this.getQuranByPage({ id: id });
+        this.getAudioQuranByIyah({ ayahNum: ayahNum });
+        this.getAyahWthTafseer({ id: ayahNum });
+
+        window.history.replaceState({}, "", newUrl);
+      }
+    },
+    getPage(surah, id, ayahNum) {
+      // numberOfAyahs
+      var obj = this.meta.data.surahs.references[Number(surah) - 1];
+      if (Number(ayahNum) > Number(obj.numberOfAyahs)) {
+        this.updateAyahNumber({ ayahNum: ayahNum });
+        var obj = this.meta.data.surahs.references[Number(surah)];
+        surah = obj.id;
+        id = obj.startPage;
+      }
+      var self = this;
+
+      this.$router.replace({
+        name: "surah-surah-page-id",
+        params: { surah: surah, id: id }
+      });
+    },
+    changSelectEdition() {},
+    visibilityListener() {
+      switch (document.visibilityState) {
+        case "visible":
+          var objAudio = this.objAudio;
+          var page = Number(objAudio.page);
+          var newUrl = "/surah/:surah/page/:id";
+          newUrl = newUrl.replace(":surah", objAudio.surah.number);
+          newUrl = newUrl.replace(":id", page);
+          window.history.replaceState({}, "", newUrl);
+          this.getQuranByPageTab({ id: page });
+          break;
       }
     }
   },
   data() {
     return {
       //  message: 'Hello',
-      scrollerHeight:555,
+      scrollerHeight: 555,
       // meta :json,
       // editionSel:'',
       // editionSelected:'',
-      selectedEdition:'',
-      selected:Number(this.$route.params.surah),
+      selectedEdition: "",
+      selected: Number(this.$route.params.surah)
       //  editionselection : null,
-
     };
   },
-  components:{
+  components: {
     AudioPlayer
   },
-  computed:{
-    ...mapGetters('quran', ["surahNum","surah","surahPage","objAudio","ayahaAudio","ayahNumber","samePage","ayahaAudioStatus","meta","edition","editionSel","editionSelected","errors",'status']),
-
-
+  computed: {
+    ...mapGetters("quran", [
+      "surahNum",
+      "surah",
+      "surahPage",
+      "tafseer",
+      "objAudio",
+      "ayahaAudio",
+      "ayahNumber",
+      "samePage",
+      "ayahaAudioStatus",
+      "meta",
+      "edition",
+      "editionSel",
+      "editionSelected",
+      "errors",
+      "status"
+    ])
   },
-  mounted(){
-		 document.addEventListener("visibilitychange", this.visibilityListener);
+  mounted() {
+    document.addEventListener("visibilitychange", this.visibilityListener);
 
-        if(this.ayahNumber)
-        this.getAudioQuranByIyah({"ayahNum": this.ayahNumber});
+    if (this.ayahNumber) {
+      this.getAudioQuranByIyah({ ayahNum: this.ayahNumber });
+      this.getAyahWthTafseer({ id: this.ayahNumber });
+    }
 
     const that = this;
-    window.onresize = () =>{
-      return (()=>{
+    window.onresize = () => {
+      return () => {
         that.scrollerHeight = that.$refs.app.clientHeight;
-      });
+      };
     };
     // if (localStorage.editionSel) {
     // this.editionselection = JSON.parse(localStorage.getItem("editionSel"));
     // }
-  },
-
   }
+};
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="css" scoped>
+.tafseer {
+  direction: rtl;
+}
+.previous {
+  z-index: 9999;
+  left: 1% !important;
+  top: 46%;
+  width: 8%;
+  height: 8%;
+}
+.next {
+  z-index: 9999;
+  right: 4% !important;
+  top: 46%;
+  width: 8%;
+  height: 8%;
+}
 </style>

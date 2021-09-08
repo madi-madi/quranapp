@@ -10,6 +10,7 @@ const quran = {
         ayahNumber: "",
         samePage:false,
         surahMeta:{},
+        tafseer:{},
         surah:[],
         surahPage:[],
         scrollerHeight:555,
@@ -25,6 +26,7 @@ const quran = {
     getters: {
         objAudio: state => state.objAudio,
         surahMeta: state => state.surahMeta,
+        tafseer: state => state.tafseer,
         ayahaAudio: state => state.ayahaAudio,
         ayahaAudioStatus: state => state.ayahaAudioStatus,
         ayahNumber: state => state.ayahNumber,
@@ -106,9 +108,14 @@ const quran = {
             state.errors = errors;
         },
         setPage(state,data){
-            console.log(data);
+            // console.log(data);
             state.surahNum = Number(data.surah);
         },
+        setTafseer(state,data){
+            // console.log(data);
+            state.tafseer =data;
+        },
+        
 
     },
     actions: {
@@ -147,6 +154,15 @@ const quran = {
             await this.$axios.$get(`http://api.alquran.cloud/v1/edition?format=audio&language=ar&type=versebyverse`).then(response => {
                 var data = response.data;
                 commit('setEdition', data);
+            }).catch(error => {
+                commit('setErrors', error);
+               });
+        },
+        async getAyahWthTafseer({ commit  }, payload) {
+            // commit('setStatus', false);
+            await this.$axios.$get(`https://api.alquran.cloud/ayah/${payload.id}/ar.muyassar`).then(response => {
+                var data = response.data;
+                commit('setTafseer', data);
             }).catch(error => {
                 commit('setErrors', error);
                });

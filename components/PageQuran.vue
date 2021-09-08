@@ -1,14 +1,17 @@
 <template>
-       <div class="col col-lg-4 col-md-6 col-sm-12 frame h-100 " v-if="surah">
+       <div class="col frame h-100 p-3" v-if="surah">
           <!-- <h1 v-if="surah">{{surah.name}}</h1> -->
           <!-- <b-card bg-variant="white" :header="surah.name" text-variant="dark" class="text-center h-100  border border-warning p-2  mt-4 ">
         <b-card-text class="h-100 mr-2 ml-2 text-justify"> -->
 
-          <div class="col pr-5 pl-5 pb-2 pt-3 mt-4 mb-5 text-justify">
+          <div class="col pr-5 pl-5 pb-2 pt-3 mt-1 mb-5 text-justify">
             <template >
               <div v-for="(sur , index) in surah" :key="index">
-              <p class="mt-2 "
-              :class="{'frame-name-surah text-center':sur[0].numberInSurah === 1}"
+              <p class=""
+              :class="{'frame-name-surah text-center':sur[0].numberInSurah === 1
+                ,'mt-4':index ==  Object.keys(surah)[0]
+                ,'mt-3':index !=  Object.keys(surah)[0]
+                }"
                v-once>
               {{ meta.data.surahs.references[index-1].text }}
               </p>
@@ -115,6 +118,7 @@
   background-image: url(~/assets/8fac60ef09ce30114277835318b75fa3.png);
   background-size: 100% 100%;
   font-family: "Al Qalam Quran";
+  direction: rtl;
   font-size: 12pt;
   /* src: url("~/assets/AlQalamQuran.ttf"); */
   /* /home/dev-ibrahim/Desktop/quran/assets/font-quran/xb_zar-webfont.ttf */

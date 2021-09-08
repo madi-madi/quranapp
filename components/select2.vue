@@ -47,6 +47,8 @@
     }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="css" scoped>
+.select2 {
+    width: 100% !important;
+}
 </style>
