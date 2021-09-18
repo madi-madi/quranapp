@@ -52,7 +52,7 @@
           
               <div class="col text-center">
                                 <b-badge variant="info" class=" 
-                ">{{surah.number}}</b-badge>
+                ">{{surahPage.number}}</b-badge>
               </div>
 
           </div>
@@ -80,6 +80,7 @@
   },
   props: {
       surah:{},
+      surahPage:{},
       meta:null,
       ayahNumber:null
   },

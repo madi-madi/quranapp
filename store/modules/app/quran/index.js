@@ -16,7 +16,9 @@ const quran = {
         scrollerHeight:555,
         meta :json,
         editionSel:'',
+        Identifier:"",
         editionSelected:'',
+        surahSelected:null,
         selected:null,
         edition:[],
         status:true,
@@ -36,7 +38,9 @@ const quran = {
         surahPage: state => state.surahPage,
         meta: state => state.meta,
         editionSel: state => state.editionSel,
+        editionSel: state => state.editionSel,
         editionSelected: state => state.editionSelected,
+        Identifier: state => state.Identifier,
         selected: state => state.selected,
         edition: state => state.edition,
         errors: state => state.errors,
@@ -80,11 +84,18 @@ const quran = {
             return r;
             }, {});
         },
-        setEditionSel(state, editionSel) {
-            state.editionSel = editionSel;
+        setEditionSel(state, data) {
+             state.editionSel = data.editionSel;
+             for (const property in state.edition) {
+                if(Number(state.edition[property].id) === Number(state.editionSel))
+                state.Identifier = state.edition[property].identifier;
+              }
         },
         setEditionSelected(state, editionSelected) {
             state.editionSelected = editionSelected;
+        },
+        setSurahSelected(state, data) {
+            state.surahSelected = data.surah;
         },
         setSelected(state, selected) {
             state.selected = selected;
@@ -98,29 +109,31 @@ const quran = {
               }, {});
               for (const property in state.edition) {
                 if(state.edition[property].identifier == "ar.abdulsamad")
-                state.editionSel = state.edition[property];
+                var edition = state.edition[property];
+                state.editionSel = edition.id;
+                state.Identifier = edition.identifier;
               }
         },
         setSurahMeta(state, data) {
-            state.surahMeta = state.meta.data.surahs.references[Number(data.surah) - 1];
+            var surahMeta = state.meta.data.surahs.references[Number(data.surah) - 1];
+            state.surahMeta = surahMeta;
+            state.surahSelected =  surahMeta.id??null;
         },
         setErrors(state,errors){
             state.errors = errors;
         },
         setPage(state,data){
-            // console.log(data);
             state.surahNum = Number(data.surah);
         },
         setTafseer(state,data){
-            // console.log(data);
             state.tafseer =data;
         },
         
 
     },
     actions: {
-        async getAudioQuranByIyah({ commit  }, payload) {
-            await this.$axios.$get(`http://api.alquran.cloud/v1/ayah/${payload.ayahNum}/ar.abdulsamad`).then(response => {
+        async getAudioQuranByIyah({ commit ,state }, payload) {
+            await this.$axios.$get(`http://api.alquran.cloud/v1/ayah/${payload.ayahNum}/${state.Identifier}`).then(response => {
                 var data = response.data;
                 commit('setAyahaAudio', data);
             }).catch(error => {
@@ -174,7 +187,12 @@ const quran = {
         updateAyahNumber({commit},payload){
             commit('setAyahNumber', payload);
 
+        },
+
+        updateSurahSelected({commit},payload){
+            commit('setSurahSelected', payload);
         }
+        
         
         
 

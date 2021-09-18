@@ -5,7 +5,7 @@
         <select2
           :options="meta.data.surahs.references"
           elm="meta"
-          v-model="selected"
+          v-model="surahSelected"
           :change-surah="changeSurah"
         >
           <option disabled value="0">Select one</option>
@@ -19,7 +19,7 @@
         <select2
           :options="edition"
           elm="edition"
-          v-model="selectedEdition"
+          v-model="editionSel"
           :change-surah="changSelectEdition"
         >
           <option disabled value="0">Select one</option>
@@ -52,9 +52,9 @@
         <!-- <div class="col-12 col-lg-4 col-md-6 col-sm-12 frame h-100 " :style="{height: scrollerHeight}" @mouseenter="mouseEnter" @mousemove="mouseMove" @mouseleave="mouseLeave"  > -->
         <div class="col-xs-12 col-lg-4 col-md-6 col-sm-12 mt-0 pl-0 ">
           <a
-            v-on:click.prevent="goPrevious()"
-            title="السابق"
-            class="previous position-absolute"
+            v-on:click.prevent="goNext()"
+            title="التالي"
+            class="next position-absolute"
             href="#"
           >
             <svg
@@ -101,10 +101,10 @@
             </svg>
           </a>
           <a
-            v-on:click.prevent="goNext()"
-            title="التالي"
-            class="next position-absolute"
-            href="#"
+          v-on:click.prevent="goPrevious()"
+          title="السابق"
+          class="previous position-absolute"
+          href="#"
           >
             <svg
               version="1.1"
@@ -153,6 +153,7 @@
             :surah="surah"
             :meta="meta"
             :ayah-number="ayahNumber"
+            :surah-page="surahPage"
           ></PageQuran>
         </div>
         <div
@@ -171,6 +172,22 @@ import { mapActions, mapGetters } from "vuex";
 import AudioPlayer from "@/components/player";
 
 export default {
+    head() {
+        var objSurah = this.meta.data.surahs.references[Number(this.$route.params.surah)];
+
+return{
+    title: "Quran قرآن كريم",
+    meta: [
+      { hid: 'description', name: 'description', content: `خيركم من تعلم القرآن وعلمه - صدقة جارية 
+      [ ${objSurah.text} ]
+       -
+       صفحة رقم  
+       -
+      ( ${this.$route.params.id} )
+
+       ` }
+    ]}
+  },
   async fetch({ store, params }) {
     // dispatch action fetchAllPosts
     await store.dispatch("quran/getQuranByPage", {
@@ -181,6 +198,7 @@ export default {
   },
   created() {
     this.updateSurahMeta({ surah: this.$route.params.surah });
+    // this.updateSurahSelected({surahSelected:obj.id});
   },
   methods: {
     ...mapActions("quran", [
@@ -190,7 +208,8 @@ export default {
       "getEdition",
       "getAudioQuranByIyah",
       "updateAyahNumber",
-      "updateSurahMeta"
+      "updateSurahMeta",
+      "updateSurahSelected"
     ]),
     goNext() {
       var surah = Number(this.$route.params.surah);
@@ -234,8 +253,8 @@ export default {
           var newArray = this.meta.data.surahs.references.filter(function(el) {
             return el.startPage === page;
           });
-          console.log(newArray);
-          objBeforSurah = newArray[0];
+          // var i = newArray.length -1;
+          // objBeforSurah = newArray[i];
         }
         if (page > Number(objBeforSurah.startPage)) {
           this.$router.push({
@@ -251,12 +270,13 @@ export default {
       }
     },
     changeSurah() {
-      var newValue = this.selected;
+      var newValue = this.surahSelected;
       var obj = this.meta.data.surahs.references[Number(newValue) - 1];
       this.$router.push({
         name: "surah-surah-page-id",
         params: { surah: obj.id, id: obj.startPage }
       });
+
     },
 
     getQuranAudio(ayahNum) {
@@ -302,17 +322,22 @@ export default {
         params: { surah: surah, id: id }
       });
     },
-    changSelectEdition() {},
+    changSelectEdition() {
+        this.getAudioQuranByIyah({ ayahNum: this.ayahNumber });
+
+    },
     visibilityListener() {
       switch (document.visibilityState) {
         case "visible":
-          var objAudio = this.objAudio;
-          var page = Number(objAudio.page);
-          var newUrl = "/surah/:surah/page/:id";
-          newUrl = newUrl.replace(":surah", objAudio.surah.number);
-          newUrl = newUrl.replace(":id", page);
-          window.history.replaceState({}, "", newUrl);
-          this.getQuranByPageTab({ id: page });
+          // console.log(new Date());
+
+          // var objAudio = this.objAudio;
+          // var page = Number(objAudio.page);
+          // var newUrl = "/surah/:surah/page/:id";
+          // newUrl = newUrl.replace(":surah", objAudio.surah.number);
+          // newUrl = newUrl.replace(":id", page);
+          // window.history.replaceState({}, "", newUrl);
+          // this.getQuranByPageTab({ id: page });
           break;
       }
     }
@@ -348,8 +373,25 @@ export default {
       "editionSel",
       "editionSelected",
       "errors",
-      "status"
-    ])
+      "status",
+      // "surahSelected"
+    ]),
+    surahSelected: {
+    get () {
+      return this.$store.state.quran.surahSelected
+    },
+    set (value) {
+      this.$store.commit('quran/setSurahSelected', {surah:value})
+    }
+  },
+    editionSel: {
+    get () {
+      return this.$store.state.quran.editionSel
+    },
+    set (value) {
+      this.$store.commit('quran/setEditionSel', {editionSel:value})
+    }
+  },
   },
   mounted() {
     document.addEventListener("visibilitychange", this.visibilityListener);
@@ -376,14 +418,14 @@ export default {
 .tafseer {
   direction: rtl;
 }
-.previous {
+.next {
   z-index: 9999;
   left: 1% !important;
   top: 46%;
   width: 8%;
   height: 8%;
 }
-.next {
+.previous {
   z-index: 9999;
   right: 4% !important;
   top: 46%;
