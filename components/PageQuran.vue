@@ -4,7 +4,7 @@
           <!-- <b-card bg-variant="white" :header="surah.name" text-variant="dark" class="text-center h-100  border border-warning p-2  mt-4 ">
         <b-card-text class="h-100 mr-2 ml-2 text-justify"> -->
 
-          <div class="col pr-5 pl-5 pb-2 pt-3 mt-1 mb-5 text-justify">
+          <div class="col p-content pb-2 pt-3 mt-1 mb-4 text-justify">
             <template >
               <div v-for="(sur , index) in surah" :key="index">
               <p class=""
@@ -140,5 +140,9 @@
   background-image: url(~/assets/8fac60ef09ce30114277835318b75fa3.png);
   background-size: 100% 100%;
   /* /home/dev-ibrahim/Desktop/quran/assets/font-quran/xb_zar-webfont.ttf */
+}
+.p-content{
+  padding-left: 10%;
+  padding-right: 10%;
 }
 </style>

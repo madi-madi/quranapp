@@ -20,7 +20,7 @@
 					<div v-on:click="seek" class="player-progress" title="Time played : Total time">
 						<div :style="{ width: this.percentComplete + '%' }" class="player-seeker"></div>
 					</div>
-					<div class="player-time">
+					<div class="player-time pt-2">
 						<div class="player-time-current">{{ currentTime }}</div>
 						<div class="player-time-total">{{ durationTime }}</div>
 					</div>
@@ -247,7 +247,7 @@ body {
 	 color: #404040;
 	 display: block;
 	 line-height: 0;
-	 padding: 1em;
+	 padding: 12px;
 	 text-decoration: none;
 }
  .player-controls > div a svg {

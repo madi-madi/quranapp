@@ -50,7 +50,7 @@
         <!-- Content here -->
 
         <!-- <div class="col-12 col-lg-4 col-md-6 col-sm-12 frame h-100 " :style="{height: scrollerHeight}" @mouseenter="mouseEnter" @mousemove="mouseMove" @mouseleave="mouseLeave"  > -->
-        <div class="col-xs-12 col-lg-4 col-md-6 col-sm-12 mt-0 pl-0 ">
+        <div class="col-xs-12 col-lg-4 col-md-6 col-sm-12 mt-0 ">
           <a
             v-on:click.prevent="goNext()"
             title="التالي"
@@ -159,7 +159,9 @@
         <div
           class="col-xs-12 col-lg-4 col-md-6 col-sm-12 mt-0 border border-success p-4 m-2 text-justify tafseer "
         >
-          {{ tafseer.text }}
+          <p>
+            {{ tafseer.text }}
+          </p>
         </div>
       </b-row>
     </b-container>
@@ -173,13 +175,14 @@ import AudioPlayer from "@/components/player";
 
 export default {
     head() {
-        var objSurah = this.meta.data.surahs.references[Number(this.$route.params.surah)];
+      var s =this.$route.params.surah;
+        var objSurah = this.meta.data.surahs.references[Number(this.$route.params.surah)-1];
 
 return{
     title: "Quran قرآن كريم",
     meta: [
       { hid: 'description', name: 'description', content: `خيركم من تعلم القرآن وعلمه - صدقة جارية 
-      [ ${objSurah.text} ]
+      [ ${objSurah.text} - ${s } ]
        -
        صفحة رقم  
        -
@@ -212,62 +215,29 @@ return{
       "updateSurahSelected"
     ]),
     goNext() {
-      var surah = Number(this.$route.params.surah);
-      var page = Number(this.$route.params.id);
-      if (page <= 603) {
-        page = page + 1;
-        var afterSurah = surah + 1;
-        var objSurah = this.meta.data.surahs.references[Number(surah) - 1];
-        var objAfterSurah = this.meta.data.surahs.references[
-          Number(afterSurah) - 1
-        ];
-        if (Number(objAfterSurah.startPage) === Number(objSurah.startPage)) {
-          var newArray = this.meta.data.surahs.references.filter(function(el) {
-            return el.startPage === page;
-          });
-          objAfterSurah = newArray[0];
+        if(this.surahPage.ayahs[0]){
+          var page = this.surahPage.ayahs[0].page;
+          page = page +1;
+          if (page <= 603) {
+              this.getQuranByPageTab({ id: page }
+              );
+          }
+
         }
-        if (page < Number(objAfterSurah.startPage)) {
-          this.$router.push({
-            name: "surah-surah-page-id",
-            params: { surah: objSurah.id, id: page }
-          });
-        } else if (page === Number(objAfterSurah.startPage)) {
-          this.$router.push({
-            name: "surah-surah-page-id",
-            params: { surah: objAfterSurah.id, id: page }
-          });
-        }
-      }
+
     },
     goPrevious() {
-      var surah = Number(this.$route.params.surah);
-      var page = Number(this.$route.params.id) - 1;
-      if (page > 0) {
-        var beforSurah = surah - 1;
-        var objSurah = this.meta.data.surahs.references[Number(surah) - 1];
-        var objBeforSurah = this.meta.data.surahs.references[
-          Number(beforSurah) - 1
-        ];
-        if (Number(objBeforSurah.startPage) === Number(objSurah.startPage)) {
-          var newArray = this.meta.data.surahs.references.filter(function(el) {
-            return el.startPage === page;
-          });
-          // var i = newArray.length -1;
-          // objBeforSurah = newArray[i];
+
+        if(this.surahPage.ayahs[0]){
+          var page = this.surahPage.ayahs[0].page;
+          page = page -1;
+          if (page > 0) {
+              this.getQuranByPageTab({ id: page }
+              );
+          }
+
         }
-        if (page > Number(objBeforSurah.startPage)) {
-          this.$router.push({
-            name: "surah-surah-page-id",
-            params: { surah: objSurah.id, id: page }
-          });
-        } else if (page === Number(objBeforSurah.startPage)) {
-          this.$router.push({
-            name: "surah-surah-page-id",
-            params: { surah: objBeforSurah.id, id: page }
-          });
-        }
-      }
+
     },
     changeSurah() {
       var newValue = this.surahSelected;
@@ -286,6 +256,10 @@ return{
       ) {
         this.getAudioQuranByIyah({ ayahNum: ayahNum });
         this.getAyahWthTafseer({ id: ayahNum });
+                var objAudio = this.objAudio;
+        var surah = objAudio.surah.number;
+        this.$store.commit('quran/setSurahSelected', {surah:surah})
+
       } else {
         var objAudio = this.objAudio;
         var surah = objAudio.surah.number;
@@ -294,7 +268,9 @@ return{
           var obj = this.meta.data.surahs.references[Number(surah)];
           surah = obj.id;
         }
-        this.selected = surah;
+        // this.selected = surah;
+        this.$store.commit('quran/setSurahSelected', {surah:surah})
+
         var id = Number(objAudio.page) + 1;
         var newUrl = "/surah/:surah/page/:id";
         newUrl = newUrl.replace(":surah", surah);
@@ -420,16 +396,16 @@ return{
 }
 .next {
   z-index: 9999;
-  left: 1% !important;
+  left: 5% !important;
   top: 46%;
-  width: 8%;
-  height: 8%;
+  width: 7%;
+  height: 7%;
 }
 .previous {
   z-index: 9999;
-  right: 4% !important;
+  right: 5% !important;
   top: 46%;
-  width: 8%;
-  height: 8%;
+  width: 7%;
+  height: 7%;
 }
 </style>

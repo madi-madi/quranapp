@@ -78,6 +78,11 @@ const quran = {
         },
         setSurahTab(state, surah) {
             state.surahPage = surah;
+            this.$router.push({
+                name: "surah-surah-page-id",
+                params: { surah: surah.ayahs[0].surah.number, id: surah.ayahs[0].page }
+              });
+            state.ayahNumber = surah.ayahs[0].number;
             state.surah = 
               surah.ayahs.reduce((r, a) => {
             r[a.surah.number] = [...r[a.surah.number] || [], a];

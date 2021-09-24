@@ -16,7 +16,9 @@
         mounted: function() {
           var vm = this;
           $(this.$refs[vm.elm])
-            .select2({ data: this.options })
+            .select2({ data: this.options ,
+            width: '100%' 
+            })
             .val(this.value)
             .trigger("change")
             .on("change", function() {
