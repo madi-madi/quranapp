@@ -63,6 +63,7 @@ const quran = {
             state.ayahNumber = data.ayahNum;
         },
         setSurah(state, surah) {
+            state.status = !!surah;
             state.surahPage = surah;
             state.surah = 
               surah.ayahs.reduce((r, a) => {
@@ -77,6 +78,7 @@ const quran = {
 
         },
         setSurahTab(state, surah) {
+            state.status = !!surah;
             state.surahPage = surah;
             this.$router.push({
                 name: "surah-surah-page-id",
@@ -127,6 +129,9 @@ const quran = {
         setErrors(state,errors){
             state.errors = errors;
         },
+        setStatus(state,status){
+            state.status = status;
+        },
         setPage(state,data){
             state.surahNum = Number(data.surah);
         },
@@ -148,8 +153,7 @@ const quran = {
 
         async getQuranByPage({ commit  }, payload) {
             commit('setPage', payload);
-
-            // commit('setStatus', false);
+             commit('setStatus', false);
             await this.$axios.$get(`http://api.alquran.cloud/v1/page/${payload.id}/ar.asad`).then(response => {
                 var data = response.data;
                 commit('setSurah', data);
@@ -158,7 +162,7 @@ const quran = {
                });
         },
         async getQuranByPageTab({ commit  }, payload) {
-            // commit('setStatus', false);
+             commit('setStatus', false);
             await this.$axios.$get(`http://api.alquran.cloud/v1/page/${payload.id}/ar.asad`).then(response => {
                 var data = response.data;
                 commit('setSurahTab', data);

@@ -52,10 +52,11 @@
         <!-- <div class="col-12 col-lg-4 col-md-6 col-sm-12 frame h-100 " :style="{height: scrollerHeight}" @mouseenter="mouseEnter" @mousemove="mouseMove" @mouseleave="mouseLeave"  > -->
         <div class="col-xs-12 col-lg-4 col-md-6 col-sm-12 mt-0 ">
           <a
+            :class="{'disabled':status === false}"
+             href="javascript:"
             v-on:click.prevent="goNext()"
             title="التالي"
             class="next position-absolute"
-            href="#"
           >
             <svg
               version="1.1"
@@ -101,10 +102,11 @@
             </svg>
           </a>
           <a
+          :class="{'disabled':status === false}"
           v-on:click.prevent="goPrevious()"
           title="السابق"
           class="previous position-absolute"
-          href="#"
+          href="javascript:"
           >
             <svg
               version="1.1"
@@ -407,5 +409,10 @@ return{
   top: 46%;
   width: 7%;
   height: 7%;
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
 }
 </style>
