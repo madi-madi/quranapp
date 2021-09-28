@@ -4,7 +4,7 @@
 
             <div class="col">
                 <div class="placeholder wave pr-1 pl-1">
-                        <div class="line w-100" v-for="line in lines" :key="line" ></div>
+                        <div class="line w-100 mr-0 ml-0" v-for="line in lines" :key="line" ></div>
 
                 </div>
             </div>
