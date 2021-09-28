@@ -1,7 +1,7 @@
 import json from '@/assets/responseMeta.json'
-if(process.client){
-    var optionQuran = JSON.parse(localStorage.getItem("quran")).edition;
-}
+// if(process.client){
+//     var optionQuran = JSON.parse(localStorage.getItem("quran")).edition;
+// }
 const quran = {
     namespaced: true,
     state: {
@@ -17,8 +17,8 @@ const quran = {
         surahPage:[],
         scrollerHeight:555,
         meta :json,
-        editionSel:process.client?optionQuran.id:"",
-        Identifier:process.client?optionQuran.Identifier:'',
+        editionSel:'',
+        Identifier:'',
         editionSelected:'',
         surahSelected:null,
         selected:null,
@@ -122,7 +122,7 @@ const quran = {
               }, {});
               for (const property in state.edition) {
                 
-                if(state.edition[property].identifier == "ar.abdulsamad" && state.editionSel == '' && state.Identifier == ''){
+                if(state.edition[property].identifier == "ar.abdulsamad"){
                     var edition = state.edition[property];
                     state.editionSel = edition.id;
                     state.Identifier = edition.identifier;
@@ -156,8 +156,8 @@ const quran = {
             await this.$axios.$get(`http://api.alquran.cloud/v1/ayah/${payload.ayahNum}/${state.Identifier}`).then(response => {
                 var data = response.data;
                 commit('setAyahaAudio', data);
-                var quran = { 'edition': {id:state.editionSel,Identifier:state.Identifier}};
-                localStorage.setItem("quran", JSON.stringify(quran));
+                // var quran = { 'edition': {id:state.editionSel,Identifier:state.Identifier}};
+                // localStorage.setItem("quran", JSON.stringify(quran));
             }).catch(error => {
                 commit('setErrors', error);
                });
