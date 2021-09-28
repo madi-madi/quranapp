@@ -1,7 +1,7 @@
-<template>
+<template #default>
   <div>
     <Navbar :meta-data="meta">
-      <div class="col">
+      <div class="col mt-1">
         <select2
           :options="meta.data.surahs.references"
           elm="meta"
@@ -15,7 +15,7 @@
           <b-dropdown-item v-for(index , item0) v-on:click="SelectEdition(item)" >{{}}</b-dropdown-item>
         </b-nav-item-dropdown> -->
       </div>
-      <div class="col" v-if="edition">
+      <div class="col mt-1" v-if="edition">
         <select2
           :options="edition"
           elm="edition"
@@ -27,9 +27,10 @@
       </div>
     </Navbar>
     <b-container fluid class="p-0 mt-2">
-      <b-row class="justify-content-center overflow-auto text-center ">
-        <div class="col col-lg-4 col-md-6 col-sm-12  ">
-          <div id="audio" class="player-wrapper">
+      <b-row class="justify-content-center overflow-auto text-center">
+        <div class="col col-lg-4 col-md-6 col-sm-12">
+          <skeleton-loader :lines="2" v-if="!status"></skeleton-loader>
+          <div id="audio" class="player-wrapper" v-if="status">
             <AudioPlayer
               :status="!!ayahaAudio"
               :ayah="ayahNumber"
@@ -43,17 +44,17 @@
     </b-container>
     <b-container fluid class="p-0 mt-2">
       <b-row
-        class="justify-content-center  mb-5 overflow-auto quran-banner"
+        class="justify-content-center mb-5 overflow-auto quran-banner"
         ref="app"
         :style="{ height: scrollerHeight }"
       >
         <!-- Content here -->
 
         <!-- <div class="col-12 col-lg-4 col-md-6 col-sm-12 frame h-100 " :style="{height: scrollerHeight}" @mouseenter="mouseEnter" @mousemove="mouseMove" @mouseleave="mouseLeave"  > -->
-        <div class="col-xs-12 col-lg-4 col-md-6 col-sm-12 mt-0 ">
+        <div class="col-xs-12 col-lg-4 col-md-6 col-sm-12 mt-0">
           <a
-            :class="{'disabled':status === false}"
-             href="javascript:"
+            :class="{ disabled: status === false }"
+            href="javascript:"
             v-on:click.prevent="goNext()"
             title="التالي"
             class="next position-absolute"
@@ -67,17 +68,17 @@
               x="0px"
               y="0px"
               viewBox="0 0 473.654 473.654"
-              style="enable-background:new 0 0 473.654 473.654;"
+              style="enable-background: new 0 0 473.654 473.654"
               xml:space="preserve"
             >
               <circle
-                style="fill:#4ABC96;"
+                style="fill: #4abc96"
                 cx="236.827"
                 cy="236.827"
                 r="236.827"
               />
               <path
-                style="fill:#FFFFFF;"
+                style="fill: #ffffff"
                 d="M338.566,193.946c-25.904,0-51.808,0-77.712,0c-4.162,0-7.965,0.546-11.495,1.455
               c0-13.399,0-26.798,0-40.2c0-24.666-30.515-37.411-47.994-19.932c-27.011,27.011-54.018,54.022-81.029,81.033
               c-10.841,10.841-10.549,28.907,0.213,39.669c27.011,27.007,54.018,54.018,81.029,81.025c9.446,9.446,20.796,9.947,30.062,5.553
@@ -102,11 +103,11 @@
             </svg>
           </a>
           <a
-          :class="{'disabled':status === false}"
-          v-on:click.prevent="goPrevious()"
-          title="السابق"
-          class="previous position-absolute"
-          href="javascript:"
+            :class="{ disabled: status === false }"
+            v-on:click.prevent="goPrevious()"
+            title="السابق"
+            class="previous position-absolute"
+            href="javascript:"
           >
             <svg
               version="1.1"
@@ -117,17 +118,17 @@
               x="0px"
               y="0px"
               viewBox="0 0 473.654 473.654"
-              style="enable-background:new 0 0 473.654 473.654;"
+              style="enable-background: new 0 0 473.654 473.654"
               xml:space="preserve"
             >
               <circle
-                style="fill:#4ABC96;"
+                style="fill: #4abc96"
                 cx="236.827"
                 cy="236.827"
                 r="236.827"
               />
               <path
-                style="fill:#FFFFFF;"
+                style="fill: #ffffff"
                 d="M358.075,216.091c-27.011-27.011-54.018-54.022-81.029-81.033
             c-25.56-25.564-65.08,14.259-39.456,39.883c11.009,11.009,22.019,22.019,33.028,33.032c-43.353,0-86.706,0-130.055,0
             c-36.225,0-36.543,56.109-0.404,56.109c43.491,0,86.982,0,130.47,0c-11.084,11.084-22.168,22.168-33.252,33.252
@@ -156,12 +157,22 @@
             :meta="meta"
             :ayah-number="ayahNumber"
             :surah-page="surahPage"
+            :status="status"
           ></PageQuran>
         </div>
         <div
-          class="col-xs-12 col-lg-4 col-md-6 col-sm-12 mt-0 border border-success p-4 m-2 text-justify tafseer "
+          class="
+            col-xs-12 col-lg-4 col-md-6 col-sm-12
+            mt-0
+            border border-success
+            p-4
+            m-2
+            text-justify
+            tafseer
+          "
         >
-          <p>
+          <skeleton-loader :lines="6" v-if="!status"></skeleton-loader>
+          <p v-if="status">
             {{ tafseer.text }}
           </p>
         </div>
@@ -174,24 +185,32 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import AudioPlayer from "@/components/player";
+import SkeletonLoader from "@/components/SkeletonLoader.vue";
 
 export default {
-    head() {
-      var s =this.$route.params.surah;
-        var objSurah = this.meta.data.surahs.references[Number(this.$route.params.surah)-1];
+  head() {
+    var s = this.$route.params.surah;
+    var objSurah = this.meta.data.surahs.references[
+      Number(this.$route.params.surah) - 1
+    ];
 
-return{
-    title: "Quran قرآن كريم",
-    meta: [
-      { hid: 'description', name: 'description', content: `خيركم من تعلم القرآن وعلمه - صدقة جارية 
-      [ ${objSurah.text} - ${s } ]
+    return {
+      title: "Quran قرآن كريم",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: `خيركم من تعلم القرآن وعلمه - صدقة جارية 
+      [ ${objSurah.text} - ${s} ]
        -
        صفحة رقم  
        -
       ( ${this.$route.params.id} )
 
-       ` }
-    ]}
+       `
+        }
+      ]
+    };
   },
   async fetch({ store, params }) {
     // dispatch action fetchAllPosts
@@ -217,29 +236,22 @@ return{
       "updateSurahSelected"
     ]),
     goNext() {
-        if(this.surahPage.ayahs[0]){
-          var page = this.surahPage.ayahs[0].page;
-          page = page +1;
-          if (page <= 603) {
-              this.getQuranByPageTab({ id: page }
-              );
-          }
-
+      if (this.surahPage.ayahs[0]) {
+        var page = this.surahPage.ayahs[0].page;
+        page = page + 1;
+        if (page <= 603) {
+          this.getQuranByPageTab({ id: page });
         }
-
+      }
     },
     goPrevious() {
-
-        if(this.surahPage.ayahs[0]){
-          var page = this.surahPage.ayahs[0].page;
-          page = page -1;
-          if (page > 0) {
-              this.getQuranByPageTab({ id: page }
-              );
-          }
-
+      if (this.surahPage.ayahs[0]) {
+        var page = this.surahPage.ayahs[0].page;
+        page = page - 1;
+        if (page > 0) {
+          this.getQuranByPageTab({ id: page });
         }
-
+      }
     },
     changeSurah() {
       var newValue = this.surahSelected;
@@ -248,7 +260,6 @@ return{
         name: "surah-surah-page-id",
         params: { surah: obj.id, id: obj.startPage }
       });
-
     },
 
     getQuranAudio(ayahNum) {
@@ -258,10 +269,9 @@ return{
       ) {
         this.getAudioQuranByIyah({ ayahNum: ayahNum });
         this.getAyahWthTafseer({ id: ayahNum });
-                var objAudio = this.objAudio;
+        var objAudio = this.objAudio;
         var surah = objAudio.surah.number;
-        this.$store.commit('quran/setSurahSelected', {surah:surah})
-
+        this.$store.commit("quran/setSurahSelected", { surah: surah });
       } else {
         var objAudio = this.objAudio;
         var surah = objAudio.surah.number;
@@ -271,7 +281,7 @@ return{
           surah = obj.id;
         }
         // this.selected = surah;
-        this.$store.commit('quran/setSurahSelected', {surah:surah})
+        this.$store.commit("quran/setSurahSelected", { surah: surah });
 
         var id = Number(objAudio.page) + 1;
         var newUrl = "/surah/:surah/page/:id";
@@ -301,8 +311,7 @@ return{
       });
     },
     changSelectEdition() {
-        this.getAudioQuranByIyah({ ayahNum: this.ayahNumber });
-
+      this.getAudioQuranByIyah({ ayahNum: this.ayahNumber });
     },
     visibilityListener() {
       switch (document.visibilityState) {
@@ -333,7 +342,8 @@ return{
     };
   },
   components: {
-    AudioPlayer
+    AudioPlayer,
+    SkeletonLoader
   },
   computed: {
     ...mapGetters("quran", [
@@ -351,25 +361,25 @@ return{
       "editionSel",
       "editionSelected",
       "errors",
-      "status",
+      "status"
       // "surahSelected"
     ]),
     surahSelected: {
-    get () {
-      return this.$store.state.quran.surahSelected
+      get() {
+        return this.$store.state.quran.surahSelected;
+      },
+      set(value) {
+        this.$store.commit("quran/setSurahSelected", { surah: value });
+      }
     },
-    set (value) {
-      this.$store.commit('quran/setSurahSelected', {surah:value})
-    }
-  },
     editionSel: {
-    get () {
-      return this.$store.state.quran.editionSel
-    },
-    set (value) {
-      this.$store.commit('quran/setEditionSel', {editionSel:value})
+      get() {
+        return this.$store.state.quran.editionSel;
+      },
+      set(value) {
+        this.$store.commit("quran/setEditionSel", { editionSel: value });
+      }
     }
-  },
   },
   mounted() {
     document.addEventListener("visibilitychange", this.visibilityListener);
