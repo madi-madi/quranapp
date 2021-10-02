@@ -3,7 +3,7 @@ export default {
   head: {
     title: 'quran',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ar'
     },
     meta: [
       { charset: 'utf-8' },
@@ -51,7 +51,11 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
+    'lodash',
   ],
+  bootstrapVue: {
+    icons: true
+  },
 
   axios: {
     // proxy: true

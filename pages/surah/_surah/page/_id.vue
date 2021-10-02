@@ -176,6 +176,50 @@
             {{ tafseer.text }}
           </p>
         </div>
+        <div>
+  <b-button v-b-tooltip.hover.left title="بحث" v-b-modal.modal-1 class="position-fixed search-quran">
+    <b-icon-search animation="throb"></b-icon-search>
+  </b-button>
+
+  <b-modal id="modal-1" cancel-title="اغلاق"  title="بحث - قرآن">
+      <div>
+    <b-form @submit.prevent="handleSearch" @reset="onReset" inline >
+
+        <b-form-input
+          id="input-1"
+          type="text"
+          v-model="keyword"
+          class="col-10 m-1"
+          placeholder="ادخل كلمة البحث ثم اضغط بحث"
+          required
+        ></b-form-input>
+
+              <b-button type="submit" variant="primary">بحث</b-button>
+    </b-form>
+    <!-- <div class="form-group">
+    <label for="search">بحث </label>
+    <input type="text" class="form-control" @input="handleSearch" id="search" aria-describedby="searchHelp" placeholder="ادخل كلمة او نص البحث">
+    <small id="searchHelp" class="form-text text-muted">خيركم من تعلم القرءان  و علمه</small>
+    </div> -->
+    <div class="mt-2">
+      <template v-if="search">
+        <div class="border"  v-for="item in search.matches" :key="item">
+          <p>
+            سورة اللفلق
+          </p>
+          <p><sup>
+            "بسم الله الرحمن الرحيم قل أعوذ برب الفلق
+            </sup></p>
+        </div>
+
+      </template>
+
+    </div>
+  </div>
+      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Close Me</b-button>
+
+  </b-modal>
+</div>
       </b-row>
     </b-container>
     <!-- <PageQuran :surah="surah" :meta="meta" :ayah-number="ayahNumber"></PageQuran> -->
@@ -186,6 +230,7 @@
 import { mapActions, mapGetters } from "vuex";
 import AudioPlayer from "@/components/player";
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
+import _ from 'lodash';
 
 export default {
   head() {
@@ -261,7 +306,12 @@ export default {
         params: { surah: obj.id, id: obj.startPage }
       });
     },
+    handleSearch: _.debounce (function (e){
+       e.preventDefault()
+       this.$store.dispatch('quran/getSearchQuran', {text:this.keyword})
 
+    },500),
+    onReset(){},
     getQuranAudio(ayahNum) {
       if (
         this.surahPage.ayahs.filter(e => Number(e.number) === Number(ayahNum))
@@ -333,17 +383,18 @@ export default {
     return {
       //  message: 'Hello',
       scrollerHeight: 555,
+      keyword:'',
       // meta :json,
       // editionSel:'',
       // editionSelected:'',
       selectedEdition: "",
-      selected: Number(this.$route.params.surah)
+      // selected: Number(this.$route.params.surah)
       //  editionselection : null,
     };
   },
   components: {
     AudioPlayer,
-    SkeletonLoader
+    SkeletonLoader,
   },
   computed: {
     ...mapGetters("quran", [
@@ -361,8 +412,8 @@ export default {
       "editionSel",
       "editionSelected",
       "errors",
-      "status"
-      // "surahSelected"
+      "status",
+     "search"
     ]),
     surahSelected: {
       get() {
@@ -407,14 +458,14 @@ export default {
   direction: rtl;
 }
 .next {
-  z-index: 9999;
+  z-index: 2;
   left: 5% !important;
   top: 46%;
   width: 7%;
   height: 7%;
 }
 .previous {
-  z-index: 9999;
+  z-index: 2;
   right: 5% !important;
   top: 46%;
   width: 7%;
@@ -424,5 +475,9 @@ export default {
 a.disabled {
   pointer-events: none;
   cursor: not-allowed;
+}
+.search-quran{
+  right: 0% !important;
+  top: 30% !important;
 }
 </style>

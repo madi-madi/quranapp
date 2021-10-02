@@ -25,6 +25,7 @@ const quran = {
         edition:[],
         status:true,
         errors:[],
+        search:[],
         skeleton: null,
         page_loading: false
     },
@@ -50,6 +51,7 @@ const quran = {
         selected: state => state.selected,
         edition: state => state.edition,
         errors: state => state.errors,
+        search: state => state.search,
         status: state => state.status,
     },
     mutations: {
@@ -147,6 +149,10 @@ const quran = {
         setTafseer(state,data){
             state.tafseer =data;
         },
+        setSearchResult(state,data){
+            state.search =data;
+        },
+        
         
 
     },
@@ -197,6 +203,17 @@ const quran = {
             await this.$axios.$get(`https://api.alquran.cloud/ayah/${payload.id}/ar.muyassar`).then(response => {
                 var data = response.data;
                 commit('setTafseer', data);
+            }).catch(error => {
+                commit('setErrors', error);
+               });
+        },
+        async getSearchQuran({ commit  }, payload) {
+            // commit('setStatus', false);
+            await this.$axios.$get(`https://api.alquran.cloud/v1/search/${payload.text}/all/ar`).then(response => {
+                console.log('res');
+                console.log(response);
+                var data = response.data;
+                commit('setSearchResult', data);
             }).catch(error => {
                 commit('setErrors', error);
                });
